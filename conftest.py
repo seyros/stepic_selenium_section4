@@ -6,12 +6,12 @@ from selenium.webdriver.chrome.options import Options
 def pytest_addoption(parser):
     parser.addoption('--browser_name', action='store', default="chrome",
                      help="Choose browser: chrome or firefox")
-    parser.addoption('--language', action='store', default="ru",
+    parser.addoption('--language', action='store', default="en",
                      help="Preferred language for site: ru, en, fr, etc...")
 
 
 @pytest.fixture(scope="function")
-def get_browser(request):
+def browser(request):
     browser_name = request.config.getoption("browser_name").lower()
     user_language = request.config.getoption("language").lower()
     # TODO: вставить проверку валидности языка: https://coderoad.ru/32773035/Список-кодов-языков-ISO639-1-в-Python
@@ -30,6 +30,6 @@ def get_browser(request):
         browser = webdriver.Firefox(firefox_profile=fp)
     else:
         raise pytest.UsageError("--browser_name should be chrome or firefox")
-    yield browser, user_language
+    yield browser
     print("\nquit browser..")
     browser.quit()
