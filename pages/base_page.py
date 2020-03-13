@@ -2,7 +2,7 @@ import math
 from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from .locators import BasePageLocators
+from .locators import BasePageLocators, BasketPageLocators
 
 
 class BasePage:
@@ -18,9 +18,22 @@ class BasePage:
         link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
         link.click()
 
+    def go_to_basket_page(self):
+        link = self.browser.find_element(*BasePageLocators.BASKET_LINK)
+        link.click()
+
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
         # Обратите внимание здесь на символ *, он указывает на то, что мы передали именно пару, и этот кортеж нужно распаковать.
+
+    def should_expect_no_items_in_basket(self):
+        assert self.is_not_element_present(*BasketPageLocators.BASKET_ITEMS), "Items found in the basket!"
+
+    def should_expect_message_of_empty_basket(self):
+        assert self.is_element_present(*BasketPageLocators.MESSAGE_OF_EMPTY_BASKET), \
+            "Message of empty basket don`t found in the basket!"
+        text_message = self.get_text_from_element(*BasketPageLocators.MESSAGE_OF_EMPTY_BASKET).strip()
+        assert text_message == 'Your basket is empty. Continue shopping'
 
     def is_element_present(self, how, what):
         try:
