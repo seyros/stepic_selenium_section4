@@ -21,22 +21,23 @@ def browser(request):
         print("\nstart chrome browser for test..")
         options = Options()
         options.add_experimental_option('prefs', {'intl.accept_languages': user_language})
-        if platform.system() == 'Windows':
-            # for my home Windows
-            browser = webdriver.Chrome(executable_path='C:\chromedriver.exe')
-        else:
-            # for my Ubuntu
-            browser = webdriver.Chrome(options=options)
+        # If your chromedriver not in PATH, please set path to chromedriver binaries or exe
+        # if you platform is Windows,
+        # browser = webdriver.Chrome(executable_path='C:\chromedriver.exe')
+        # if you platform is Linux,
+        # browser = webdriver.Chrome('/path/to/chromedriver')
+        browser = webdriver.Chrome(options=options)
+
     elif browser_name == "firefox":
         print("\nstart firefox browser for test..")
         fp = webdriver.FirefoxProfile()
         fp.set_preference("intl.accept_languages", user_language)
-        if platform.system() == 'Windows':
-            # for my home Windows
-            browser = webdriver.Firefox(executable_path='C:\geckodriver.exe', firefox_profile=fp)  # for my home Windows
-        else:
-            # for my Ubuntu
-            browser = webdriver.Firefox(firefox_profile=fp)
+        # If your geckodriver not in PATH, please set path to geckodriver binaries or exe
+        # if you platform is Windows,
+        # browser = webdriver.Firefox(executable_path='C:\webdriver\geckodriver.exe', firefox_profile=fp)
+        # if you platform is Linux,
+        # browser = webdriver.Firefox(firefox_profile=fp, executable_path='/path/to/geckodriver')
+        browser = webdriver.Firefox(firefox_profile=fp)
     else:
         raise pytest.UsageError("--browser_name should be chrome or firefox")
     yield browser

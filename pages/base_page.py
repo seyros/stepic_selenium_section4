@@ -23,8 +23,9 @@ class BasePage:
         link.click()
 
     def should_be_login_link(self):
+        # Обратите внимание здесь на символ *, он указывает на то,
+        # что мы передали именно пару, и этот кортеж нужно распаковать.
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
-        # Обратите внимание здесь на символ *, он указывает на то, что мы передали именно пару, и этот кортеж нужно распаковать.
 
     def should_expect_no_items_in_basket(self):
         assert self.is_not_element_present(*BasketPageLocators.BASKET_ITEMS), "Items found in the basket!"
@@ -109,5 +110,5 @@ class BasePage:
             print("No second alert presented")
 
     def should_be_authorized_user(self):
-        assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
-                                                                     " probably unauthorised user"
+        assert self.is_element_present(
+            *BasePageLocators.USER_ICON), "User icon is not presented, probably unauthorised user"
