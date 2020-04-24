@@ -69,6 +69,13 @@ class BasePage:
         except NoSuchElementException as e:
             print(e)
 
+    def input_value_into_element(self, how, what, text):
+        try:
+            element = self.browser.find_element(how, what)
+            element.send_keys(text)
+        except Exception as e:
+            print(e)
+
     def get_element(self, how, what):
         try:
             element = self.browser.find_element(how, what)
@@ -100,3 +107,7 @@ class BasePage:
             alert.accept()
         except NoAlertPresentException:
             print("No second alert presented")
+
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
+                                                                     " probably unauthorised user"

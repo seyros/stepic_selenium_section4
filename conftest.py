@@ -1,3 +1,4 @@
+import platform
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -20,14 +21,22 @@ def browser(request):
         print("\nstart chrome browser for test..")
         options = Options()
         options.add_experimental_option('prefs', {'intl.accept_languages': user_language})
-        browser = webdriver.Chrome(options=options)
-        # browser = webdriver.Chrome(executable_path='C:\chromedriver.exe') # for my home Windows
+        if platform.system() == 'Windows':
+            # for my home Windows
+            browser = webdriver.Chrome(executable_path='C:\chromedriver.exe')
+        else:
+            # for my Ubuntu
+            browser = webdriver.Chrome(options=options)
     elif browser_name == "firefox":
         print("\nstart firefox browser for test..")
-        # browser = webdriver.Firefox(executable_path='C:\geckodriver.exe')  # for my home Windows
         fp = webdriver.FirefoxProfile()
         fp.set_preference("intl.accept_languages", user_language)
-        browser = webdriver.Firefox(firefox_profile=fp)
+        if platform.system() == 'Windows':
+            # for my home Windows
+            browser = webdriver.Firefox(executable_path='C:\geckodriver.exe', firefox_profile=fp)  # for my home Windows
+        else:
+            # for my Ubuntu
+            browser = webdriver.Firefox(firefox_profile=fp)
     else:
         raise pytest.UsageError("--browser_name should be chrome or firefox")
     yield browser
